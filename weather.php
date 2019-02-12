@@ -4,7 +4,7 @@ $api = 'https://ipapi.co/' . $ip . '/latlong/';
 $location = file_get_contents($api);
 $point = explode(",", $location);
 
-$request= 'http://api.openweathermap.org/data/2.5/weather?lat=' . $point[0] . '&lon=' . $point[1] . '&appid=ca27e634bf28b4e2a1ddd86cc8dcc10d';
+$request= 'http://api.openweathermap.org/data/2.5/weather?lat=' . $point[0] . '&lon=' . $point[1] . '&appid=YOUR API KEY  ';
 $response = file_get_contents($request);
 $jsonobj = json_decode($response);
 $kelvin = $jsonobj->main->temp;  
