@@ -1,21 +1,45 @@
-<?php 
-$ip = '';
-$api = 'https://ipapi.co/' . $ip . '/latlong/';
-$location = file_get_contents($api);
-$point = explode(",", $location);
+<?php
 
-$request= 'http://api.openweathermap.org/data/2.5/weather?lat=' . $point[0] . '&lon=' . $point[1] . '&appid=YOUR API KEY  ';
-$response = file_get_contents($request);
-$jsonobj = json_decode($response);
-$kelvin = $jsonobj->main->temp;  
+class Weather {
 
-$celcius = $kelvin - 273.15; 
+    public function get_location_api() {
+        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+            $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+            $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+        }
+        $client = @$_SERVER['HTTP_CLIENT_IP'];
+        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+        $remote = $_SERVER['REMOTE_ADDR'];
 
-$url = 'http://ip-api.com/json/?fields=city';
-$data = file_get_contents($url); 
-$characters = json_decode($data);
+        if (filter_var($client, FILTER_VALIDATE_IP)) {
+            $ip = $client;
+        } elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
+            $ip = $forward;
+        } else {
+            $ip = $remote;
+        }
+        $data = file_get_contents("http://ip-api.com/json/" . $ip);
+        return $client_array = json_decode($data);
+        $client_array = json_decode($array);
+    }
 
-echo "<br>$celcius";
-echo "<br>$characters->city";
-echo "<br>$location";
-?> 
+    public function get_weather_api() {
+
+        $get_location = $this->get_location_api();
+
+        $city = htmlspecialchars($get_location->city);
+        $country = htmlspecialchars($get_location->countryCode);
+
+        $request = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',' . $country . '&appid=ca27e634bf28b4e2a1ddd86cc8dcc10d';
+
+        $response = file_get_contents($request);
+        return $jsonobj = json_decode($response);
+        $jsonobj = json_decode($array);
+
+        $kelvin = $jsonobj->main->temp;
+
+        $celcius = $kelvin - 273.15;
+    }
+
+}
+
