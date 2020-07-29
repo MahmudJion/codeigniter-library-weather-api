@@ -30,7 +30,7 @@ class Weather {
         $city = htmlspecialchars($get_location->city);
         $country = htmlspecialchars($get_location->countryCode);
 
-        $request = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',' . $country . '&appid=ca27e634bf28b4e2a1ddd86cc8dcc10d';
+        $request = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',' . $country . '&appid="your_app_id_here"';
 
         $response = file_get_contents($request);
         return $jsonobj = json_decode($response);
