@@ -1,4 +1,4 @@
-# Weather_api
+# Codeigniter_library-Weather_api
 Getting current weather based on geo location using ip address
 
 ### Using CodeIgniter Libraries
