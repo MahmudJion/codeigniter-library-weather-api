@@ -1,6 +1,8 @@
 # Codeigniter_library-Weather_api
 Getting current weather based on geo location using ip address
 
+For more details: https://openweathermap.org/api
+
 ### Using CodeIgniter Libraries
 All of the available libraries are located in your system/libraries/ directory. In most cases, to use one of these classes involves initializing it within a controller using the following initialization method:
 
