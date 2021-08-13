@@ -9,6 +9,7 @@ class Weather
             $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
             $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
         }
+        
         $client = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
         $remote = $_SERVER['REMOTE_ADDR'];
@@ -20,6 +21,7 @@ class Weather
         } else {
             $ip = $remote;
         }
+
         $data = file_get_contents("http://ip-api.com/json/" . $ip);
         return $client_array = json_decode($data);
         $client_array = json_decode($array);
@@ -37,6 +39,7 @@ class Weather
 
         $response = file_get_contents($request);
         return $jsonobj = json_decode($response);
+        
         $jsonobj = json_decode($array);
 
         $kelvin = $jsonobj->main->temp;
