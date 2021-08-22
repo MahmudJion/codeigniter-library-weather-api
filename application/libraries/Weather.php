@@ -2,7 +2,7 @@
 
 class Weather
 {
-
+    //get location API
     public function get_location_api()
     {
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
@@ -24,9 +24,9 @@ class Weather
 
         $data = file_get_contents("http://ip-api.com/json/" . $ip);
         return $client_array = json_decode($data);
-        $client_array = json_decode($array);
     }
 
+    //get weather API
     public function get_weather_api()
     {
 
@@ -38,13 +38,12 @@ class Weather
         $request = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',' . $country . '&appid="APP_ID"';
 
         $response = file_get_contents($request);
-        return $jsonobj = json_decode($response);
         
-        $jsonobj = json_decode($array);
-
         $kelvin = $jsonobj->main->temp;
-
         $celcius = $kelvin - 273.15;
+
+        return $jsonobj = json_decode($response);
+
     }
 
 }
