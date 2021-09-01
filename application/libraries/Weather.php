@@ -2,7 +2,6 @@
 
 class Weather
 {
-    //get location API
     public function get_location_api()
     {
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
@@ -26,7 +25,6 @@ class Weather
         return $client_array = json_decode($data);
     }
 
-    //get weather API
     public function get_weather_api()
     {
 
