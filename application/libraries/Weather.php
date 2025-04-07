@@ -1,7 +1,18 @@
 <?php
 
+use GuzzleHttp\Client;
+
 class Weather
 {
+    private $httpClient;
+    private $apiKey;
+
+    public function __construct()
+    {
+        $this->httpClient = new Client();
+        $this->apiKey = getenv('OPENWEATHER_API_KEY'); // Load API key from environment variables
+    }
+
     public function get_location_api()
     {
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
@@ -21,8 +32,14 @@ class Weather
             $ip = $remote;
         }
 
-        $data = file_get_contents("http://ip-api.com/json/" . $ip);
-        return $client_array = json_decode($data);
+        try {
+            $response = $this->httpClient->get("http://ip-api.com/json/" . $ip);
+            $data = json_decode($response->getBody());
+            return $data;
+        } catch (Exception $e) {
+            // Handle errors gracefully
+            return (object) ['city' => 'Unknown', 'countryCode' => 'XX'];
+        }
     }
 
     public function get_weather_api()
@@ -32,15 +49,21 @@ class Weather
         $city = htmlspecialchars($get_location->city);
         $country = htmlspecialchars($get_location->countryCode);
 
-        $request = 'http://api.openweathermap.org/data/2.5/weather?q=' . $city . ',' . $country . '&appid="APP_ID"';
+        try {
+            $response = $this->httpClient->get('http://api.openweathermap.org/data/2.5/weather', [
+                'query' => [
+                    'q' => $city . ',' . $country,
+                    'appid' => $this->apiKey,
+                    'units' => 'metric' // Get temperature in Celsius directly
+                ]
+            ]);
 
-        $response = file_get_contents($request);
-
-        $kelvin = $jsonobj->main->temp;
-        $celcius = $kelvin - 273.15;
-
-        return $jsonobj = json_decode($response);
+            $jsonobj = json_decode($response->getBody());
+            return $jsonobj;
+        } catch (Exception $e) {
+            // Handle errors gracefully
+            return (object) ['error' => 'Unable to fetch weather data'];
+        }
     }
-
 }
 
